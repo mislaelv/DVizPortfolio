@@ -1,0 +1,113 @@
+---
+title: "Data Visualization Portfolio - Winter 2019"
+author: "Mislael A. Valentin-Cortes"
+date: "4/30/2019"
+output:
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_float: no
+    code_folding: hide
+  pdf_document: 
+    number_sections: yes
+    toc: yes
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,
+                      warning = FALSE)
+load("C:/Users/valen/OneDrive/Desktop/THIS ONE ICPSR_35525/DS0003/35525-0003-Data.rda")
+```
+
+# Introduction
+
+##  Project STRIDE and the LGB Experience in New York
+
+Empirical research findings have demonstrated throughout the past decades that LGBT+ populations are disproportionately affected by adverse physical and mental health outcomes as a result of historical oppression. Individuals who have have sexual or romantic relationships with persons of the same sex, or who identify as lesbian, gay, bisexual, or transgender often suffer from discrimination, gender-based violence, lack of social support, and other factors that place them at a disadvantage. When compared to heterosexuals, members of the LGBT+ community are more likely to experience depressive symptoms, suicidal ideation, commit suicide, and experience emotional distress. 
+
+The R graphs presented in this portfolio utilize data from Project STRIDE and explore the intersections between demographic factors, sexual identity, discrimination, stigma, and social support among a sample of straight and LGB identifying individuals. This data will be further explored using Tableau to understand psychological well-being, self-esteem, and social support among the sample.
+
+## Access to Healthcare in Puerto Rico
+
+Following the 2017 Hurricane season, the United States territory of Puerto Rico caught media attention for the high mortality rates in the aftermath of Hurricane Maria. Many of these deaths were atributted to improper government planning, geographical conditions, and the intensity of the storms; however, many also considered delays in medical care and the damaged healthcare system as the major contributing factor to the number of deaths. The QGIS map presented in this portfolio presents the geographical access to hospitals and healthcare centers in the island in 2009, which was prior to the Hurricane and Puerto Rico's ongoing economic crisis. With the economic crisis worsening healthcare infrastructure and funding, hospitals and health clinics have consequently been closing down; meaning that the current state of access to healthcare services might be much worse than depicted in this map.
+
+## Data Sources
+
+R graphs and Tableau graphs were developed using the Project STRIDE dataset, which is a study conducted in New York City between 2004 and 2005 to examine stress, identity, and mental health among the Lesbian, Gay, and Bisexual community in New York City. The study uses extensive qualitative and some quantitative measures and is a longitudinal survey of 525 men and women aged 18 to 59. Each participant was administered a semi-structured interview called the Life Events Questionnaire, which was designed to illicit information about the type of events individuals experience throughout their lifetime. This research describes social stressors that affect minority population, explores the coping and social support resources that they utilize as they confront these social stressors, and assesses the associations of stress and coping with mental health outcomes including mental disorders and wellbeing. 
+
+The QGIS map was developed by combining Census Track data from the 2010 Census to shapefiles developed by the Puerto Rican government with the location of hospitals and healthcare centers. 
+
+## Predictors Explored
+
+Diagram of LGB Identity and Mental Health Outcomes
+![](C:\Users\valen\OneDrive\Desktop\SW 670\NYDiagram.JPG)
+
+Diagram of Healthcare Access 
+![](C:\Users\valen\OneDrive\Desktop\SW 670\PRDiagram.JPG)
+
+
+## Libraries
+
+```{r}
+
+library(ggplot2)
+library(ggthemes)
+library(grid)
+
+```
+
+See code for libraries used to develop the R and ggplot2 graphs.
+
+# R Graphs
+
+## Base R Graph
+```{r}
+
+hist(da35525.0003$COM_4, main = "Age When First Coming Out to Family Member",xlab = "Age at the time", breaks = 20, ylab = "Number of Individuals", col = "yellow")
+
+```
+
+## ggplot2 graphs
+
+```{r}
+ggplot(da35525.0003,aes(x=DIS_TOT, fill= SUBGROUP))+ geom_density(color="black")+facet_wrap(~SUBGROUP)+theme_minimal()+labs(title="Average Perceived Discrimination by Subgroup", x="Perceived Discrimination Score")+scale_color_viridis_d()+scale_fill_viridis_d()
+```
+
+```{r}
+ggplot(da35525.0003, aes(x=SUBGROUP, y=DIS_TOT, color=SUBGROUP, fill=SUBGROUP))+coord_flip()+stat_summary(fun.y = "mean", geom = "bar")+scale_color_viridis_d()+scale_fill_viridis_d()+labs(title = "Perceived Discrimination Faced by Subgroup", x="Individual Subgroups of Race and Sexual Orientation", y="Every Day Discrimination Score")+theme(axis.text.y = element_blank())+theme_minimal()
+```
+
+```{r}
+ggplot(da35525.0003, aes(x=SUBGROUP, y=STIGMA, fill=SUBGROUP, color=SUBGROUP))+geom_boxplot()+theme_minimal()+labs(title = "Stigma Associated with Intersectionality of Identities", x="Individual Subgroups of Race and Sexual Orientation", y="Encountered Stigma Score")+theme(axis.text.x = element_blank())+scale_fill_viridis_d()
+```
+
+
+```{r}
+ggplot(da35525.0003, aes(x=SUBGROUP, y=SIMOTHSUP, color=SUBGROUP, fill=SUBGROUP))+coord_flip()+stat_summary(fun.y = "median", geom = "point", size=5)+scale_color_viridis_d()+scale_fill_viridis_d()+labs(title = "Support from Similar Others Based on Identities", x="Individual Subgroups of Race and Sexual Orientation", y="Average Similar Other Support Score")+theme_minimal()
+```
+
+# Tableau Graphs
+
+![](C:\Users\valen\OneDrive\Desktop\SW 670\Tableau\Psychological.jpg)
+
+![](C:\Users\valen\OneDrive\Desktop\SW 670\Tableau\Self-esteem.jpg)
+
+
+![](C:\Users\valen\OneDrive\Desktop\SW 670\Tableau\Similar Other Support.jpg)
+
+# QGIS Map
+
+
+![](C:\Users\valen\OneDrive\Desktop\SW 670\PR Health.png)
+
+
+
+
+
+
+
+
+
